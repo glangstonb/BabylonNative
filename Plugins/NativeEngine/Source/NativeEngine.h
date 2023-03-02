@@ -53,9 +53,14 @@ namespace Babylon
             Dispose();
         }
 
+        bool IsValid() const
+        {
+            return !Disposed && bgfx::isValid(Handle);
+        }
+
         void Dispose()
         {
-            if (!Disposed && bgfx::isValid(Handle))
+            if (IsValid())
             {
                 bgfx::destroy(Handle);
             }
@@ -123,6 +128,7 @@ namespace Babylon
         void CreateProgramInternal(const std::string vertexSource, const std::string fragmentSource, ProgramData& program);
         Napi::Value CreateProgram(const Napi::CallbackInfo& info);
         Napi::Value CreateProgramAsync(const Napi::CallbackInfo& info);
+        Napi::Value IsProgramReady(const Napi::CallbackInfo& info);
         Napi::Value GetUniforms(const Napi::CallbackInfo& info);
         Napi::Value GetAttributes(const Napi::CallbackInfo& info);
         void SetProgram(NativeDataStream::Reader& data);

@@ -457,6 +457,7 @@ namespace Babylon
 
                 InstanceMethod("createProgram", &NativeEngine::CreateProgram),
                 InstanceMethod("createProgramAsync", &NativeEngine::CreateProgramAsync),
+                InstanceMethod("isProgramReady", &NativeEngine::IsProgramReady),
                 InstanceMethod("getUniforms", &NativeEngine::GetUniforms),
                 InstanceMethod("getAttributes", &NativeEngine::GetAttributes),
 
@@ -732,6 +733,12 @@ namespace Babylon
             throw Napi::Error::New(info.Env(), ex.what());
         }
         return Napi::Pointer<ProgramData>::Create(info.Env(), program, Napi::NapiPointerDeleter(program));
+    }
+
+    Napi::Value NativeEngine::IsProgramReady(const Napi::CallbackInfo& info)
+    {
+        const ProgramData* program = info[0].As<Napi::Pointer<ProgramData>>().Get();
+        return Napi::Boolean::From(info.Env(), program != nullptr && program->IsValid());
     }
 
     Napi::Value NativeEngine::CreateProgramAsync(const Napi::CallbackInfo& info)
