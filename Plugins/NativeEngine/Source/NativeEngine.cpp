@@ -735,12 +735,6 @@ namespace Babylon
         return Napi::Pointer<ProgramData>::Create(info.Env(), program, Napi::NapiPointerDeleter(program));
     }
 
-    Napi::Value NativeEngine::IsProgramReady(const Napi::CallbackInfo& info)
-    {
-        const ProgramData* program = info[0].As<Napi::Pointer<ProgramData>>().Get();
-        return Napi::Boolean::From(info.Env(), program != nullptr && program->IsValid());
-    }
-
     Napi::Value NativeEngine::CreateProgramAsync(const Napi::CallbackInfo& info)
     {
         const std::string vertexSource = info[0].As<Napi::String>().Utf8Value();
@@ -764,6 +758,12 @@ namespace Babylon
                     onSuccessRef.Call({});
                 } });
         return Napi::Pointer<ProgramData>::Create(info.Env(), program, Napi::NapiPointerDeleter(program));
+    }
+
+    Napi::Value NativeEngine::IsProgramReady(const Napi::CallbackInfo& info)
+    {
+        const ProgramData* program = info[0].As<Napi::Pointer<ProgramData>>().Get();
+        return Napi::Boolean::From(info.Env(), program != nullptr && program->IsValid());
     }
 
     Napi::Value NativeEngine::GetUniforms(const Napi::CallbackInfo& info)
